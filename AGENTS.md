@@ -2,20 +2,41 @@
 
 ## 1. Version Control & GitHub
 
-### Strict Prohibition
+### Allowed Read-Only Git Commands
 
-* Never execute:
+The agent may run only these Git inspection commands:
 
-  * `git init`
-  * `git add`
-  * `git commit`
-  * `git push`
-  * Any other Git-related commands
-* All version control actions must be performed manually by the user.
+* `git status --short`
+* `git diff --`
+* `git diff --stat`
+* `git rev-parse --show-toplevel`
+* `git branch --show-current`
+* `git log --oneline -n 5`
+
+### Forbidden Git Mutation Commands
+
+Never run commands that change repository state, including:
+
+* `git init`
+* `git add`
+* `git commit`
+* `git push`
+* `git pull`
+* `git fetch`
+* `git merge`
+* `git rebase`
+* `git reset`
+* `git checkout`
+* `git switch`
+* `git stash`
+* `git tag`
+* `git clean`
+
+All version control mutation actions must be performed manually by the user.
 
 ### Commit Suggestions
 
-* After making structural or code changes, provide the exact commands needed to commit the changes.
+* After making code or structural file changes, provide the exact commands needed to commit the changes.
 * These commands must appear at the very end of the response.
 * Do **not** execute them.
 
@@ -29,7 +50,14 @@ git commit -m "feat: add user authentication"
 
 ## 2. Project Initialization & Documentation
 
-Before starting any task or writing code, verify that the following files exist in the project root. Create them if they are missing.
+At the first write-task in a repository, ensure that the following files exist in the project root. Create them if they are missing.
+
+Do not create or update these files for:
+
+* Read-only questions
+* Explanation-only tasks
+* Quick diagnostics
+* Formatting-only answers with no file changes
 
 ### Required Files
 
@@ -40,12 +68,14 @@ Before starting any task or writing code, verify that the following files exist 
    * Tech stack
    * Update whenever:
 
-     * Structure changes
-     * New dependencies are added
+     * Architecture changes
+     * Dependencies change
+     * Entrypoints or major modules change
+     * Project setup commands change
 
 2. **`progress.md`**
 
-   * Mandatory activity log
+   * Activity log for completed write-tasks
 
 3. **`troubleshooting.md`**
 
@@ -56,9 +86,21 @@ Before starting any task or writing code, verify that the following files exist 
      * Failed attempts
      * Proven solutions
 
+### Memory Update Rules
+
+Update `about_project.md` only when architecture, dependencies, entrypoints, major modules, or project setup commands change.
+
+Update `progress.md` after completed write-tasks only.
+
+Update `troubleshooting.md` only when:
+
+* An error was resolved
+* More than 2 attempts were needed
+* A reusable constraint or workaround was discovered
+
 ### Progress Log Format
 
-Every completed task must be logged in `progress.md`:
+Every completed write-task must be logged in `progress.md`:
 
 ```text
 Date/Time (UTC) | Task Name | Detail | Modified Files | Status
@@ -86,9 +128,28 @@ When resolving errors or technical obstacles, record them in `troubleshooting.md
 * Be direct.
 * Stay task-focused.
 
-### Minimalist Output
+### Response Modes
 
-* Responses (excluding code, tool output, and Git command suggestions) must remain under **4 lines**.
+Default mode:
+
+* Keep responses concise.
+* Prefer 3-6 bullets.
+* Avoid preamble and postamble.
+
+Detailed mode is allowed when:
+
+* The user asks for analysis or review.
+* The task fails.
+* Security, data loss, migration, architecture, or debugging is involved.
+* Multiple files were changed.
+* Tests fail or cannot be run.
+
+After code or structural file changes, the final response must include:
+
+* Changed files
+* Verification run
+* Known limitations
+* Commit commands at the very end
 
 ### No Preamble / Postamble
 
