@@ -1,6 +1,21 @@
 # AGENTS.md
-## Agent Rules & Workflow Protocols
 
-### 🚀 Overview
+A single set of rules for AI coding agents (Claude Code, Codex, and others), so they behave the same way in every project.
 
-This repository provides a production-grade system prompt and workflow protocol (`AGENTS.md`) designed for AI coding tools. By enforcing a strict documentation cycle (`about_project.md`, `progress.md`, and `troubleshooting.md`), it prevents agents from repeating past errors, optimizes context windows, and maintains consistent technical standards across agentic software development workflows.
+## What's inside
+
+- `AGENTS.md`: the rules, read by most coding agents.
+- `CLAUDE.md`: the same rules, read by Claude Code.
+
+## What the rules cover
+
+- **Think first:** state assumptions, ask when unclear, prefer the simpler approach.
+- **Small changes:** touch only what the task needs, match existing style.
+- **Safe Git:** read-only commands and `fetch`/`pull` are free; anything else needs explicit permission.
+- **Verification:** run the project's own checks and never claim a check passed unless it did.
+- **Safety:** no secrets in code, no malicious tooling.
+- **Communication:** short, direct, with changed files and verification listed at the end.
+
+## Usage
+
+Copy `CLAUDE.md` to `~/.claude/CLAUDE.md` for all projects, or place `AGENTS.md` / `CLAUDE.md` in a repository root for that project only. Project-level files take precedence over the global one.
